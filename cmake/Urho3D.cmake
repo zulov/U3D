@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2022-2024 the U3D project.
+# Copyright (c) 2022-2025 the U3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -72,7 +72,6 @@ function (urho_find_origin dir root source origin)
                 break ()
             endif ()            
         endif ()
-        message ("urho_find_origin : path = ${currentpath}")
         set (previouspath ${currentpath})
         get_filename_component (currentpath ${previouspath} DIRECTORY)
     endwhile ()
@@ -110,6 +109,7 @@ endif ()
 
 # Check URHO3D_HOME
 if (URHO3D_HOME AND NOT EXISTS ${URHO3D_HOME})
+    message ("${URHO3D_HOME} don't exist ... reset URHO3D_HOME !")
     unset (URHO3D_HOME)
 endif ()
 
