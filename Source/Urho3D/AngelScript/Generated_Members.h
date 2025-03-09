@@ -23139,6 +23139,9 @@ template <class T> void RegisterMembers_Text3D(asIScriptEngine* engine, const ch
 {
     RegisterMembers_Drawable<T>(engine, className);
 
+    // bool Text3D::GetAutoLocalizable() const
+    engine->RegisterObjectMethod(className, "bool GetAutoLocalizable() const", AS_METHODPR(T, GetAutoLocalizable, () const, bool), AS_CALL_THISCALL);
+    engine->RegisterObjectMethod(className, "bool get_autoLocalizable() const", AS_METHODPR(T, GetAutoLocalizable, () const, bool), AS_CALL_THISCALL);
     // Vector2 Text3D::GetCharPosition(unsigned index)
     engine->RegisterObjectMethod(className, "Vector2 GetCharPosition(uint)", AS_METHODPR(T, GetCharPosition, (unsigned), Vector2), AS_CALL_THISCALL);
     engine->RegisterObjectMethod(className, "Vector2 get_charPositions(uint)", AS_METHODPR(T, GetCharPosition, (unsigned), Vector2), AS_CALL_THISCALL);
@@ -23261,6 +23264,9 @@ template <class T> void RegisterMembers_Text3D(asIScriptEngine* engine, const ch
 
     // void Text3D::SetAlignment(HorizontalAlignment hAlign, VerticalAlignment vAlign)
     engine->RegisterObjectMethod(className, "void SetAlignment(HorizontalAlignment, VerticalAlignment)", AS_METHODPR(T, SetAlignment, (HorizontalAlignment, VerticalAlignment), void), AS_CALL_THISCALL);
+    // void Text3D::SetAutoLocalizable(bool enable)
+    engine->RegisterObjectMethod(className, "void SetAutoLocalizable(bool)", AS_METHODPR(T, SetAutoLocalizable, (bool), void), AS_CALL_THISCALL);
+    engine->RegisterObjectMethod(className, "void set_autoLocalizable(bool)", AS_METHODPR(T, SetAutoLocalizable, (bool), void), AS_CALL_THISCALL);
 
     // void Text3D::SetColor(const Color& color)
     engine->RegisterObjectMethod(className, "void SetColor(const Color&in)", AS_METHODPR(T, SetColor, (const Color&), void), AS_CALL_THISCALL);
