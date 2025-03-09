@@ -10815,26 +10815,23 @@ template <class T> void RegisterMembers_Localization(asIScriptEngine* engine, co
 {
     RegisterMembers_Object<T>(engine, className);
 
-    // String Localization::Get(const String& id)
-    engine->RegisterObjectMethod(className, "String Get(const String&in)", AS_METHODPR(T, Get, (const String&), String), AS_CALL_THISCALL);
+    // const String& Localization::Get(const String& id) const
+    engine->RegisterObjectMethod(className, "const String& Get(const String&in) const", AS_METHODPR(T, Get, (const String&) const, const String&), AS_CALL_THISCALL);
 
-    // String Localization::GetLanguage()
-    engine->RegisterObjectMethod(className, "String GetLanguage()", AS_METHODPR(T, GetLanguage, (), String), AS_CALL_THISCALL);
-    engine->RegisterObjectMethod(className, "String get_language()", AS_METHODPR(T, GetLanguage, (), String), AS_CALL_THISCALL);
+    // const String& Localization::GetLanguage() const
+    engine->RegisterObjectMethod(className, "const String& GetLanguage() const", AS_METHODPR(T, GetLanguage, () const, const String&), AS_CALL_THISCALL);
 
-    // String Localization::GetLanguage(int index)
-    engine->RegisterObjectMethod(className, "String GetLanguage(int)", AS_METHODPR(T, GetLanguage, (int), String), AS_CALL_THISCALL);
+    // const String& Localization::GetLanguage(int index) const
+    engine->RegisterObjectMethod(className, "const String& GetLanguage(int) const", AS_METHODPR(T, GetLanguage, (int) const, const String&), AS_CALL_THISCALL);
 
     // int Localization::GetLanguageIndex() const
     engine->RegisterObjectMethod(className, "int GetLanguageIndex() const", AS_METHODPR(T, GetLanguageIndex, () const, int), AS_CALL_THISCALL);
-    engine->RegisterObjectMethod(className, "int get_languageIndex() const", AS_METHODPR(T, GetLanguageIndex, () const, int), AS_CALL_THISCALL);
 
-    // int Localization::GetLanguageIndex(const String& language)
-    engine->RegisterObjectMethod(className, "int GetLanguageIndex(const String&in)", AS_METHODPR(T, GetLanguageIndex, (const String&), int), AS_CALL_THISCALL);
+    // int Localization::GetLanguageIndex(const String& language) const
+    engine->RegisterObjectMethod(className, "int GetLanguageIndex(const String&in) const", AS_METHODPR(T, GetLanguageIndex, (const String&) const, int), AS_CALL_THISCALL);
 
     // int Localization::GetNumLanguages() const
     engine->RegisterObjectMethod(className, "int GetNumLanguages() const", AS_METHODPR(T, GetNumLanguages, () const, int), AS_CALL_THISCALL);
-    engine->RegisterObjectMethod(className, "int get_numLanguages() const", AS_METHODPR(T, GetNumLanguages, () const, int), AS_CALL_THISCALL);
 
     // void Localization::LoadJSONFile(const String& name, const String& language = String::EMPTY)
     engine->RegisterObjectMethod(className, "void LoadJSONFile(const String&in, const String&in = String::EMPTY)", AS_METHODPR(T, LoadJSONFile, (const String&, const String&), void), AS_CALL_THISCALL);
