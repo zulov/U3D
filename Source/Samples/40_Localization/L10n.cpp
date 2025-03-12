@@ -74,11 +74,11 @@ void L10n::InitLocalizationSystem()
     auto* l10n = GetSubsystem<Localization>();
     // JSON files must be in UTF8 encoding without BOM
     // The first found language will be set as current
-    l10n->LoadJSONFile("Texts/StringsEnRu.json");
+    l10n->LoadJSONFile("Translation/StringsEnRu.json");
     // You can load multiple files
-    l10n->LoadJSONFile("Texts/StringsDe.json");
-    l10n->LoadJSONFile("Texts/StringsLv.json", "lv");
-    l10n->LoadJSONFile("Texts/StringsFr.json", "fr");
+    l10n->LoadJSONFile("Translation/StringsDe.json");
+    l10n->LoadJSONFile("Translation/StringsLv.json", "lv");
+    l10n->LoadJSONFile("Translation/StringsFr.json", "fr");
     // Hook up to the change language
     SubscribeToEvent(E_CHANGELANGUAGE, URHO3D_HANDLER(L10n, HandleChangeLanguage));
 }

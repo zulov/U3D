@@ -32,11 +32,11 @@ void InitLocalizationSystem()
 {
     // JSON files must be in UTF8 encoding without BOM
     // The first found language will be set as current
-    localization.LoadJSONFile("Texts/StringsEnRu.json");
+    localization.LoadJSONFile("Translation/StringsEnRu.json");
     // You can load multiple files
-    localization.LoadJSONFile("Texts/StringsDe.json");
-    localization.LoadJSONFile("Texts/StringsLv.json", "lv");
-    localization.LoadJSONFile("Texts/StringsFr.json", "fr");
+    localization.LoadJSONFile("Translation/StringsDe.json");
+    localization.LoadJSONFile("Translation/StringsLv.json", "lv");
+    localization.LoadJSONFile("Translation/StringsFr.json", "fr");
     // Hook up to the change language
     SubscribeToEvent("ChangeLanguage", "HandleChangeLanguage");
 }
