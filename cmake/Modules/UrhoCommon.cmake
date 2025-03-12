@@ -643,7 +643,7 @@ if (MSVC)
     set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${DEBUG_RUNTIME}")
     set (CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELEASE} ${RELEASE_RUNTIME} /fp:fast /Zi /GS-")
     set (CMAKE_C_FLAGS_RELEASE ${CMAKE_C_FLAGS_RELWITHDEBINFO})
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")    
     set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${DEBUG_RUNTIME}")
     set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} ${RELEASE_RUNTIME} /fp:fast /Zi /GS- /D _SECURE_SCL=0")
     set (CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
@@ -1959,6 +1959,14 @@ macro (_setup_target)
     if (${TARGET_NAME}_HEADER_PATHNAME)
         enable_pch (${${TARGET_NAME}_HEADER_PATHNAME})
     endif ()
+    
+    # on MSVC with {fmt} header_only, we need to enable uni-code for Urho3D and targets dependents of Urho3D
+    if (MSVC)
+        if (${TARGET_NAME} STREQUAL Urho3D OR NOT IS_URHO3D)
+            target_compile_options (${TARGET_NAME} PUBLIC /utf-8)
+        endif ()
+    endif ()
+    
     # Extra compiler flags for Xcode which are dynamically changed based on active arch in order to support Mach-O universal binary targets
     # We don't add the ABI flag for Xcode because it automatically passes '-arch i386' compiler flag when targeting 32 bit which does the same thing as '-m32'
     if (XCODE)
