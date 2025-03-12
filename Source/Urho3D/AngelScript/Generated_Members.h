@@ -10856,22 +10856,22 @@ template <class T> void RegisterMembers_Localization(asIScriptEngine* engine, co
 {
     RegisterMembers_Object<T>(engine, className);
 
-    // String Localization::Get(const String& id)
-    engine->RegisterObjectMethod(className, "String Get(const String&in)", AS_METHODPR(T, Get, (const String&), String), AS_CALL_THISCALL);
+    // const String& Localization::Get(const String& id) const
+    engine->RegisterObjectMethod(className, "const String& Get(const String&in) const", AS_METHODPR(T, Get, (const String&) const, const String&), AS_CALL_THISCALL);
 
-    // String Localization::GetLanguage()
-    engine->RegisterObjectMethod(className, "String GetLanguage()", AS_METHODPR(T, GetLanguage, (), String), AS_CALL_THISCALL);
-    engine->RegisterObjectMethod(className, "String get_language()", AS_METHODPR(T, GetLanguage, (), String), AS_CALL_THISCALL);
+    // const String& Localization::GetLanguage() const
+    engine->RegisterObjectMethod(className, "const String& GetLanguage() const", AS_METHODPR(T, GetLanguage, () const, const String&), AS_CALL_THISCALL);
+    engine->RegisterObjectMethod(className, "const String& get_language() const", AS_METHODPR(T, GetLanguage, () const, const String&), AS_CALL_THISCALL);
 
-    // String Localization::GetLanguage(int index)
-    engine->RegisterObjectMethod(className, "String GetLanguage(int)", AS_METHODPR(T, GetLanguage, (int), String), AS_CALL_THISCALL);
+    // const String& Localization::GetLanguage(int index) const
+    engine->RegisterObjectMethod(className, "const String& GetLanguage(int) const", AS_METHODPR(T, GetLanguage, (int) const, const String&), AS_CALL_THISCALL);
 
     // int Localization::GetLanguageIndex() const
     engine->RegisterObjectMethod(className, "int GetLanguageIndex() const", AS_METHODPR(T, GetLanguageIndex, () const, int), AS_CALL_THISCALL);
     engine->RegisterObjectMethod(className, "int get_languageIndex() const", AS_METHODPR(T, GetLanguageIndex, () const, int), AS_CALL_THISCALL);
 
-    // int Localization::GetLanguageIndex(const String& language)
-    engine->RegisterObjectMethod(className, "int GetLanguageIndex(const String&in)", AS_METHODPR(T, GetLanguageIndex, (const String&), int), AS_CALL_THISCALL);
+    // int Localization::GetLanguageIndex(const String& language) const
+    engine->RegisterObjectMethod(className, "int GetLanguageIndex(const String&in) const", AS_METHODPR(T, GetLanguageIndex, (const String&) const, int), AS_CALL_THISCALL);
 
     // int Localization::GetNumLanguages() const
     engine->RegisterObjectMethod(className, "int GetNumLanguages() const", AS_METHODPR(T, GetNumLanguages, () const, int), AS_CALL_THISCALL);
@@ -23203,6 +23203,9 @@ template <class T> void RegisterMembers_Text3D(asIScriptEngine* engine, const ch
 {
     RegisterMembers_Drawable<T>(engine, className);
 
+    // bool Text3D::GetAutoLocalizable() const
+    engine->RegisterObjectMethod(className, "bool GetAutoLocalizable() const", AS_METHODPR(T, GetAutoLocalizable, () const, bool), AS_CALL_THISCALL);
+    engine->RegisterObjectMethod(className, "bool get_autoLocalizable() const", AS_METHODPR(T, GetAutoLocalizable, () const, bool), AS_CALL_THISCALL);
     // Vector2 Text3D::GetCharPosition(unsigned index)
     engine->RegisterObjectMethod(className, "Vector2 GetCharPosition(uint)", AS_METHODPR(T, GetCharPosition, (unsigned), Vector2), AS_CALL_THISCALL);
     engine->RegisterObjectMethod(className, "Vector2 get_charPositions(uint)", AS_METHODPR(T, GetCharPosition, (unsigned), Vector2), AS_CALL_THISCALL);
@@ -23325,6 +23328,9 @@ template <class T> void RegisterMembers_Text3D(asIScriptEngine* engine, const ch
 
     // void Text3D::SetAlignment(HorizontalAlignment hAlign, VerticalAlignment vAlign)
     engine->RegisterObjectMethod(className, "void SetAlignment(HorizontalAlignment, VerticalAlignment)", AS_METHODPR(T, SetAlignment, (HorizontalAlignment, VerticalAlignment), void), AS_CALL_THISCALL);
+    // void Text3D::SetAutoLocalizable(bool enable)
+    engine->RegisterObjectMethod(className, "void SetAutoLocalizable(bool)", AS_METHODPR(T, SetAutoLocalizable, (bool), void), AS_CALL_THISCALL);
+    engine->RegisterObjectMethod(className, "void set_autoLocalizable(bool)", AS_METHODPR(T, SetAutoLocalizable, (bool), void), AS_CALL_THISCALL);
 
     // void Text3D::SetColor(const Color& color)
     engine->RegisterObjectMethod(className, "void SetColor(const Color&in)", AS_METHODPR(T, SetColor, (const Color&), void), AS_CALL_THISCALL);
