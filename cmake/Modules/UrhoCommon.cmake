@@ -236,6 +236,10 @@ if (IS_URHO3D)
             set (URHO3D_INSTALL_PREFIX "" CACHE STRING "Urho3D install prefix added to cmake install prefix path")
         endif ()
     endif ()
+    # add option for Urho3D as a submodule : allow skip install
+    if (URHO3D_AS_SUBMODULE)
+        option (URHO3D_SKIP_INSTALL "Disable Sdk Installation" TRUE)
+    endif ()
     option (URHO3D_IK "Enable inverse kinematics support" TRUE)
     option (URHO3D_NAVIGATION "Enable navigation support" TRUE)
     cmake_dependent_option (URHO3D_NETWORK "Enable networking support" TRUE "NOT WEB" FALSE)
@@ -337,7 +341,7 @@ if (IS_URHO3D)
     cmake_dependent_option (URHO3D_MACOSX_BUNDLE "Use MACOSX_BUNDLE when setting up macOS executable targets (Xcode/macOS platform only)" FALSE "XCODE AND NOT ARM" FALSE)
 else ()
     # Add Urho3d options for external and user projects
-    set (URHO3D_HOME "" CACHE PATH "Path to Urho3D build tree or SDK installation location (downstream project only)")
+    set (URHO3D_HOME "${URHO3D_HOME}" CACHE PATH "Path to Urho3D build tree or SDK installation location (downstream project only)")
     if (CMAKE_PROJECT_NAME MATCHES ^Urho3D-ExternalProject-)
         set (URHO3D_SSE ${HAVE_SSE})
     else ()
@@ -639,7 +643,7 @@ if (MSVC)
     set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${DEBUG_RUNTIME}")
     set (CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELEASE} ${RELEASE_RUNTIME} /fp:fast /Zi /GS-")
     set (CMAKE_C_FLAGS_RELEASE ${CMAKE_C_FLAGS_RELWITHDEBINFO})
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")    
     set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${DEBUG_RUNTIME}")
     set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} ${RELEASE_RUNTIME} /fp:fast /Zi /GS- /D _SECURE_SCL=0")
     set (CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
@@ -738,7 +742,7 @@ else ()
                     endif ()
                 endif ()
                 if (NOT URHO3D_SSE)
-                    if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
+                    if (CMAKE_CXX_COMPILER_ID MATCHES Clang AND NOT URHO3D_64BIT)
                         # Clang enables SSE support for i386 ABI by default, so use the '-mno-sse' compiler flag to nullify that and make it consistent with GCC
                         set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mno-sse")
                         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mno-sse")
@@ -769,14 +773,13 @@ else ()
                     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_PTHREADS=1")
                     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_PTHREADS=1")
                 endif ()
-                # Since version 1.37.25 emcc reduces default runtime exports, but we need "Pointer_stringify" so it needs to be explicitly declared now
-                # (See https://github.com/kripken/emscripten/commit/3bc1f9f08b9f420680124af703c787244468cedc for more detail)
                 # Since version 1.37.28 emcc reduces default runtime exports, but we need "FS" so it needs to be explicitly requested now
                 # (See https://github.com/kripken/emscripten/commit/f2191c1223e8261bf45f4e27d2ba4d2e9d8b3341 for more detail)
                 # Since version 1.39.5 emcc disables deprecated find event target behavior by default; we revert the flag for now until the support is removed
                 # (See https://github.com/emscripten-core/emscripten/commit/948af470be12559367e7629f31cf7c841fbeb2a9#diff-291d81f9d42b322a89881b6d91f7a122 for more detail)
                 # replace deprecated EXTRA_EXPORTED_RUNTIME_METHODS by EXPORTED_RUNTIME_METHODS
-                set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sEXPORTED_RUNTIME_METHODS=\"['Pointer_stringify']\" -s FORCE_FILESYSTEM=1 -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=0 --bind")
+                # remove deprecated Pointer_stringify as exported method
+                set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s FORCE_FILESYSTEM=1 -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=0 --bind")
                 set (CMAKE_C_FLAGS_RELEASE "-Oz -DNDEBUG")
                 set (CMAKE_CXX_FLAGS_RELEASE "-Oz -DNDEBUG")
                 # Remove variables to make the -O3 regalloc easier
@@ -1527,7 +1530,7 @@ macro (install_header_files)
     if (NOT ARG_DESTINATION)
         message (FATAL_ERROR "Couldn't setup install command because the install destination is not specified.")
     endif ()
-    if (NOT ARG_BUILD_TREE_ONLY AND NOT CMAKE_PROJECT_NAME MATCHES ^Urho3D-ExternalProject-)
+    if (NOT ARG_BUILD_TREE_ONLY AND NOT CMAKE_PROJECT_NAME MATCHES ^Urho3D-ExternalProject- AND NOT URHO3D_SKIP_INSTALL AND IS_URHO3D)
         install (${INSTALL_TYPE} ${INSTALL_SOURCES} DESTINATION ${CURRENT_INSTALL_PREFIX}${ARG_DESTINATION} ${INSTALL_MATCHING})
     endif ()
 
@@ -1956,6 +1959,14 @@ macro (_setup_target)
     if (${TARGET_NAME}_HEADER_PATHNAME)
         enable_pch (${${TARGET_NAME}_HEADER_PATHNAME})
     endif ()
+    
+    # on MSVC with {fmt} header_only, we need to enable uni-code for Urho3D and targets dependents of Urho3D
+    if (MSVC)
+        if (${TARGET_NAME} STREQUAL Urho3D OR NOT IS_URHO3D)
+            target_compile_options (${TARGET_NAME} PUBLIC /utf-8)
+        endif ()
+    endif ()
+    
     # Extra compiler flags for Xcode which are dynamically changed based on active arch in order to support Mach-O universal binary targets
     # We don't add the ABI flag for Xcode because it automatically passes '-arch i386' compiler flag when targeting 32 bit which does the same thing as '-m32'
     if (XCODE)
