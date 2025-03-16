@@ -101,8 +101,17 @@ endmacro ()
 
 if (EXISTS ${CMAKE_SOURCE_DIR}/cmake)
     set (PROJECT_CMAKE_DIR ${CMAKE_SOURCE_DIR}/cmake)
-else()
+else ()
     message ("!!! Cannot find the cmake directory !")
+    return ()
+endif ()
+
+# for Android build, if URHO3D_HOME is not explicitly set,
+# Let FindUrho3D.cmake find the urho3d lib.
+if (ANDROID AND NOT DEFINED(URHO3D_HOME) AND (BUILD_STAGING_DIR OR JNI_DIR))
+    if (NOT URHOCOMMON_INUSE)
+        include (${CMAKE_SOURCE_DIR}/cmake/Modules/UrhoCommon.cmake)
+    endif ()
     return ()
 endif ()
 
