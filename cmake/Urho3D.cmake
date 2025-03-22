@@ -27,6 +27,17 @@
 # URHO3D_HOME should be the root directory (e.g., URHO3D_ROOT_DIR) that contains all the content of Urho3D if it is used as a submodule (source code).
 # URHO3D_ROOT_DIR, URHO3D_SOURCE_DIR, and URHO3D_BUILD_DIR are defined to handle each specific case depending on how Urho3D is used.
 
+# variables for fetch u3d:
+#
+# URHO3D_FETCH_CONDITION: can be "always" (default), "never", "if_u3d_not_found"
+# GIT_U3D_REPO: can be an url or a local path
+# GIT_U3D_TAG: can be a commit hash, a branch name or a tag
+# by default use U3D-community repository
+
+set (DEFAULT_URHO3D_FETCH_CONDITION "always")
+set (DEFAULT_GIT_U3D_REPOSITORY "https://github.com/u3d-community/U3D.git")
+set (DEFAULT_GIT_U3D_TAG "master")
+
 # Output variables:
 #
 # URHO3D_AS_SUBMODULE: Boolean, true if Urho3D is used in the user project as a submodule (i.e., "as third-party, from source").
@@ -37,11 +48,13 @@
 # URHO3D_CMAKE_MODULE: A specific directory containing UrhoCommon.cmake.
 #                      This allows using a custom set of CMake files or the latest available with older Urho3D sources.
 
-# TODO: Add an option to download Urho3D source/SDK from Git (use the CMake FetchContent module?).
 # TODO: Patcher to finish
 # TODO: finish the tag list generation in discover module
 # TODO: allow select crosscompiled build
 
+
+set (URHO3D_TARGET Urho3D)
+string (TOLOWER ${URHO3D_TARGET} URHO3D_TARGET_LOWER)
 string (TOUPPER ${CMAKE_PROJECT_NAME} PROJECTNAME)
 
 # Find the Urho3D root path and source path from a presumed Urho3D subfolder.
@@ -99,6 +112,63 @@ macro (urho_mark_as_advanced_options)
     endforeach ()
 endmacro ()
 
+# Fetch U3D from a git repository
+macro (urho_fetch_git)
+    if (NOT URHO3D_FETCH_CONDITION)
+        set (URHO3D_FETCH_CONDITION ${DEFAULT_URHO3D_FETCH_CONDITION})
+    endif ()
+    if (URHO3D_FETCH_CONDITION STREQUAL "always")
+        message (DEBUG "URHO3D_FETCH_CONDITION set to always. Fetch!")
+    elseif (URHO3D_FETCH_CONDITION STREQUAL "never")
+        message (DEBUG "URHO3D_FETCH_CONDITION set to never. Skip fetch!")
+        return ()
+    elseif (URHO3D_FETCH_CONDITION STREQUAL "if_u3d_not_found" AND URHO3D_DISCOVER_EXISTS)
+        set (num_dirs 0)
+        list (LENGTH ${PROJECTNAME}_URHO3D_DIRS num_dirs)
+        if (num_dirs GREATER 0)
+            message (DEBUG "URHO3D_FETCH_CONDITION set to if_u3d_not_found. Skip fetch!")
+            return ()
+        else ()
+            message (DEBUG "URHO3D_FETCH_CONDITION set to if_u3d_not_found. Fetch!")
+        endif ()
+    endif ()
+
+    set (URHO3D_FETCH_DIR ${CMAKE_BINARY_DIR}/_deps/${URHO3D_TARGET_LOWER}-src)
+
+    if (NOT EXISTS "${URHO3D_FETCH_DIR}/README.md")
+        if (NOT GIT_U3D_REPO)
+            set (GIT_U3D_REPO ${DEFAULT_GIT_U3D_REPOSITORY})
+        endif ()
+        if (NOT GIT_U3D_TAG)
+            set (GIT_U3D_TAG ${DEFAULT_GIT_U3D_TAG})
+        endif ()
+
+        message (STATUS "Fetch U3D from ${GIT_U3D_REPO}:${GIT_U3D_TAG}")
+        
+        # cmake “fetchcontent” performs a first configuration step that causes a re-entrance problem with our urho modules.
+        # We therefore prefer to run "git fetch" directly.
+        file (MAKE_DIRECTORY "${URHO3D_FETCH_DIR}")
+        execute_process (COMMAND git init WORKING_DIRECTORY "${URHO3D_FETCH_DIR}" OUTPUT_QUIET ERROR_QUIET)
+        execute_process (COMMAND git fetch --depth=1 "${GIT_U3D_REPO}" "${GIT_U3D_TAG}" WORKING_DIRECTORY "${URHO3D_FETCH_DIR}" OUTPUT_QUIET ERROR_QUIET)
+        execute_process (COMMAND git reset --hard FETCH_HEAD WORKING_DIRECTORY "${URHO3D_FETCH_DIR}" OUTPUT_QUIET ERROR_QUIET)
+        message (STATUS "U3D fetched in ${URHO3D_FETCH_DIR}")
+
+        if (EXISTS "${URHO3D_FETCH_DIR}/README.md")
+            if (URHO3D_DISCOVER_EXISTS)
+                # add to UrhoDiscover dropdown list (URHO3D_SELECT) if exist
+                list (APPEND ${PROJECTNAME}_URHO3D_DIRS ${URHO3D_FETCH_DIR})
+                list (APPEND ${PROJECTNAME}_URHO3D_TAGS "U3D (source_${GIT_U3D_REPO}:${GIT_U3D_TAG}) - ${URHO3D_FETCH_DIR}")
+                urho_update_cached_dirs ()
+                message (" ... Add ${GIT_U3D_REPO}:${GIT_U3D_TAG} to URHO3D_DISCOVER list")
+            else ()
+                set (URHO3D_HOME ${URHO3D_FETCH_DIR})
+            endif ()
+        endif ()
+    endif ()
+endmacro ()
+
+
+
 if (EXISTS ${CMAKE_SOURCE_DIR}/cmake)
     set (PROJECT_CMAKE_DIR ${CMAKE_SOURCE_DIR}/cmake)
 else ()
@@ -123,7 +193,10 @@ endif ()
 
 # Add UrhoDiscover
 if (EXISTS "${PROJECT_CMAKE_DIR}/UrhoDiscover.cmake")
+    set (URHO3D_DISCOVER_EXISTS TRUE)
     include (${PROJECT_CMAKE_DIR}/UrhoDiscover.cmake)
+else ()
+    set (URHO3D_DISCOVER_EXISTS FALSE)
 endif ()
 
 # Get UrhoPatcher
@@ -143,15 +216,24 @@ if (URHO3D_PATCHER_EXISTS)
     endif() 
 endif ()
 
-# Stop here if URHO3D_HOME is empty or undefined.
-# URHO3D_HOME should be set manually.
+# if URHO3D_HOME is empty or undefined, try to fetch source
+# Stop here, if none or some urho3d directories found.
+# if more than one directory found then let the developper selects manually via cmake-gui.
 if (NOT URHO3D_HOME)
+    urho_fetch_git ()
     if (${PROJECTNAME}_URHO3D_DIRS)
-        message ("-- URHO3D_DISCOVER has found some Urho3D folders. Please select one with cmake-gui.")
-    else ()
-        message ("!! URHO3D_HOME is undefined !")
+        set (num_tags 0)
+        list (LENGTH ${PROJECTNAME}_URHO3D_DIRS num_tags)
+        if (num_tags EQUAL 1)
+            set (URHO3D_HOME "${${PROJECTNAME}_URHO3D_DIRS}") # one result : use as default
+        elseif (num_tags EQUAL 0)
+            message ("!! did not find Urho3D content. Please set URHO3D_HOME manually in the project's CMakeLists.txt file and retry.")
+            return ()
+        else ()
+            message (STATUS "found ${num_tags} Urho3D folders. Please select one with cmake-gui.")
+            return ()
+        endif ()
     endif ()
-    return ()
 endif ()
 
 # At this point, URHO3D_HOME is defined.
@@ -169,13 +251,13 @@ unset (origin)
 if (NOT CMAKE_PROJECT_NAME STREQUAL Urho3D)
     urho_find_origin ("${URHO3D_HOME}" URHO3D_ROOT_DIR URHO3D_SOURCE_DIR origin)
     if (NOT origin)
-        message (FATAL_ERROR "!!! The Urho3D path appears to be invalid !")
+        message (FATAL_ERROR "!!! The Urho3D path ${URHO3D_HOME} appears to be invalid !")
     endif ()
 endif ()
 
 if (origin STREQUAL "source")
     set (URHO3D_AS_SUBMODULE TRUE CACHE INTERNAL BOOLEAN)
-    set (URHO3D_BUILD_DIR ${CMAKE_BINARY_DIR}/urho3d)
+    set (URHO3D_BUILD_DIR ${CMAKE_BINARY_DIR}/${URHO3D_TARGET_LOWER})
 endif ()
 
 # Set a user-provided CMake module path or use the default path.
@@ -208,9 +290,10 @@ if (origin)
         endif()        
     endif ()
 
-    message (" -- from ${origin}")
-    message (" -- Using URHO3D_HOME: ${URHO3D_HOME}")
-    message (" -- Using CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+    message (STATUS "from ${origin}")
+    message (STATUS "Using URHO3D_HOME: ${URHO3D_HOME}")
+    message (STATUS "Using URHO3D_BUILD_DIR: ${URHO3D_BUILD_DIR}")
+    message (STATUS "Using CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
 
     # Include Urho3D sources (if used as a submodule) or call UrhoCommon (if used as an SDK/build tree).
     if (URHO3D_AS_SUBMODULE)
