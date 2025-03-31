@@ -48,9 +48,7 @@ set (DEFAULT_GIT_U3D_TAG "master")
 # URHO3D_CMAKE_MODULE: A specific directory containing UrhoCommon.cmake.
 #                      This allows using a custom set of CMake files or the latest available with older Urho3D sources.
 
-# TODO: Patcher to finish
-# TODO: finish the tag list generation in discover module
-# TODO: allow select crosscompiled build
+# TODO: recognize the default compile options for the sdks
 
 
 set (URHO3D_TARGET Urho3D)
@@ -191,23 +189,6 @@ else ()
     set (URHO3D_DISCOVER_EXISTS FALSE)
 endif ()
 
-# Get UrhoPatcher
-if (EXISTS "${PROJECT_CMAKE_DIR}/UrhoPatcher.cmake")
-    set (URHO3D_PATCHER_EXISTS TRUE)
-else ()
-    set (URHO3D_PATCHER_EXISTS FALSE)
-endif ()
-
-# Apply Patcher method : remove previously patched CMake files, restoring the originals.
-if (URHO3D_PATCHER_EXISTS)
-    set (URHO3D_PATCHER_RESTORE TRUE)
-    include (${PROJECT_CMAKE_DIR}/UrhoPatcher.cmake)
-    if (NOT URHO3D_PATCHER_SUCCESS)
-        set (URHO3D_HOME "")
-        return ()
-    endif() 
-endif ()
-
 # if URHO3D_HOME is empty or undefined, try to fetch source
 # if more than one directory found then let the developper selects manually via cmake-gui.
 if (NOT URHO3D_HOME)
@@ -277,15 +258,6 @@ list (REMOVE_ITEM CMAKE_MODULE_PATH ${URHO3D_CMAKE_MODULE})
 list (PREPEND CMAKE_MODULE_PATH ${URHO3D_CMAKE_MODULE})
 
 if (origin)
-    # Apply patches if enabled.
-    if (URHO3D_PATCHER_EXISTS)
-        set (URHO3D_PATCHER_APPLY TRUE)
-        include (${PROJECT_CMAKE_DIR}/UrhoPatcher.cmake)
-        if (NOT URHO3D_PATCHER_SUCCESS)
-            set (URHO3D_HOME "")
-            return ()
-        endif()
-    endif ()
     # Include Urho3D sources (if used as a submodule) or call UrhoCommon (if used as an SDK/build tree).
     if (URHO3D_AS_SUBMODULE)
         add_subdirectory (${URHO3D_ROOT_DIR} ${URHO3D_BUILD_DIR})
