@@ -90,9 +90,11 @@ else ()
         string (TOLOWER ${CMAKE_BUILD_TYPE} config)
         if (BUILD_STAGING_DIR)
             # Another special case where library location is already known to be in the build tree of Urho3D project
+            get_filename_component (BUILD_STAGING_DIR ${BUILD_STAGING_DIR}/cmake DIRECTORY)
             set (URHO3D_HOME ${BUILD_STAGING_DIR}/cmake/${config}/${ANDROID_ABI})
         elseif (JNI_DIR)
             # Using Urho3D AAR from Maven repository
+            get_filename_component (JNI_DIR ${JNI_DIR}/urho3d DIRECTORY)
             set (URHO3D_HOME ${JNI_DIR}/urho3d/${config}/${ANDROID_ABI})
         else ()
             message (FATAL_ERROR "Neither 'BUILD_STAGING_DIR' nor 'JNI_DIR' is set")
@@ -155,10 +157,10 @@ else ()
 
     # Set URHO3D_INCLUDE_DIRS
     if (URHO3D_BASE_INCLUDE_DIR)
-        get_filename_component (URHO3D_INCLUDE_DIRS ${URHO3D_BASE_INCLUDE_DIR} PATH)
+        get_filename_component (URHO3D_INCLUDE_DIRS ${URHO3D_BASE_INCLUDE_DIR} DIRECTORY)
         if (NOT URHO3D_HOME)
             # URHO3D_HOME is not set when using SDK installed on system-wide default location, so set it now
-            get_filename_component (URHO3D_HOME ${URHO3D_INCLUDE_DIRS} PATH)
+            get_filename_component (URHO3D_HOME ${URHO3D_INCLUDE_DIRS} DIRECTORY)
         endif ()
         list (APPEND URHO3D_INCLUDE_DIRS ${URHO3D_BASE_INCLUDE_DIR}/ThirdParty)
         if (URHO3D_PHYSICS)
