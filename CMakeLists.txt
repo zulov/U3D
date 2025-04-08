@@ -39,8 +39,8 @@ include (UrhoCommon)
 
 # Ensure Compatibility if using old UrhoCommon module
 if (NOT URHO3D_ROOT_DIR)
-    message (WARNING "You're using old cmake modules !/n
-        new urho3d cmake modules are available for better urho3d/user project separation")
+    message (WARNING "You're using old cmake modules !")
+    message (WARNING "New urho3d cmake modules are available for better urho3d/user project separation")
     set (URHO3D_ROOT_DIR ${CMAKE_SOURCE_DIR})
     set (URHO3D_SOURCE_DIR ${CMAKE_SOURCE_DIR}/Source)
     set (URHO3D_BUILD_DIR ${CMAKE_BINARY_DIR})    
