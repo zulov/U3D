@@ -439,10 +439,10 @@ generate_source (lj_folddef.h folddef src/lj_opt_fold.c)
 if (URHO3D_LUAJIT_AMALG)
     set (LJCORE_C src/ljamalg.c)
 else ()
-    set (LJCORE_C src/lj_gc.c src/lj_err.c src/lj_char.c src/lj_bc.c src/lj_obj.c src/lj_buf.c
+    set (LJCORE_C src_lj_assert.c src/lj_gc.c src/lj_err.c src/lj_char.c src/lj_bc.c src/lj_obj.c src/lj_buf.c
         src/lj_str.c src/lj_tab.c src/lj_func.c src/lj_udata.c src/lj_meta.c src/lj_debug.c
-        src/lj_state.c src/lj_dispatch.c src/lj_vmevent.c src/lj_vmmath.c src/lj_strscan.c
-        src/lj_strfmt.c src/lj_strfmt_num.c src/lj_api.c src/lj_profile.c
+        src/lj_prng.c src/lj_state.c src/lj_dispatch.c src/lj_vmevent.c src/lj_vmmath.c src/lj_strscan.c
+        src/lj_strfmt.c src/lj_strfmt_num.c src/lj_serialize.c src/lj_api.c src/lj_profile.c
         src/lj_lex.c src/lj_parse.c src/lj_bcread.c src/lj_bcwrite.c src/lj_load.c
         src/lj_ir.c src/lj_opt_mem.c src/lj_opt_fold.c src/lj_opt_narrow.c
         src/lj_opt_dce.c src/lj_opt_loop.c src/lj_opt_split.c src/lj_opt_sink.c
@@ -581,7 +581,7 @@ if (NOT CMAKE_PROJECT_NAME MATCHES ^Urho3D-ExternalProject-LuaJIT AND NOT IOS AN
     if (NOT TARGET LuaJIT_universal)
         set (LIBS LuaJIT)
     endif ()
-    if (NOT MSVC AND NOT CMAKE_HOST_WIN32)
+    if (NOT MSVC)# AND NOT CMAKE_HOST_WIN32)
         list (APPEND LIBS m)
     endif ()
 
