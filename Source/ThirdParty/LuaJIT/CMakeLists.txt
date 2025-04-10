@@ -299,7 +299,8 @@ if (NOT LUAJIT_CACHE STREQUAL "${URHO3D_64BIT}-${LUAJIT_DISABLE_FFI}-${LUAJIT_DI
     if (TARGET_LJARCH STREQUAL x64)
         find_string ("LJ_FR2 (1)" TWO_SLOT_FRAME)
         if (NOT TWO_SLOT_FRAME)
-            set (DASM_ARCH x86)
+            # okkoma test - disable x86
+            #set (DASM_ARCH x86)
         endif ()
     elseif (TARGET_LJARCH STREQUAL arm)
         if (TARGET_SYS STREQUAL iOS)
@@ -581,7 +582,7 @@ if (NOT CMAKE_PROJECT_NAME MATCHES ^Urho3D-ExternalProject-LuaJIT AND NOT IOS AN
     if (NOT TARGET LuaJIT_universal)
         set (LIBS LuaJIT)
     endif ()
-    if (NOT MSVC)# AND NOT CMAKE_HOST_WIN32)
+    if (NOT MSVC AND NOT CMAKE_HOST_WIN32 OR MINGW)
         list (APPEND LIBS m)
     endif ()
 
