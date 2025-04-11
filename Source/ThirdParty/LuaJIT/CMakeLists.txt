@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2008-2022 the Urho3D project.
+# Copyright (c) 2022-2025 the U3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -298,9 +299,13 @@ if (NOT LUAJIT_CACHE STREQUAL "${URHO3D_64BIT}-${LUAJIT_DISABLE_FFI}-${LUAJIT_DI
     endif ()
     if (TARGET_LJARCH STREQUAL x64)
         find_string ("LJ_FR2 (1)" TWO_SLOT_FRAME)
-        if (NOT TWO_SLOT_FRAME)
-            # okkoma test - disable x86
-            #set (DASM_ARCH x86)
+        # We are an issue here:
+        # this condition is from the original luajit makefile so only applies to unix/linux build. (see https://luajit.org/install.html)
+        # but not for msvc (see original msvcbuild.bat), so exclude MSVC.
+        # Another requirement for x64 is to force LJ_FR2 when using GC64
+        # for this, refer to discussion https://github.com/LuaJIT/LuaJIT/issues/25
+        if (NOT TWO_SLOT_FRAME AND NOT MSVC AND NOT LUAJIT_ENABLE_GC64)
+            set (DASM_ARCH x86)
         endif ()
     elseif (TARGET_LJARCH STREQUAL arm)
         if (TARGET_SYS STREQUAL iOS)
