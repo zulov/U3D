@@ -47,6 +47,11 @@ if (NOT URHO3D_ROOT_DIR)
     set (URHO3D_CMAKE_MODULE ${CMAKE_SOURCE_DIR}/cmake/Modules)
 endif ()
 
+# Check and restore broken binary symlinks
+check_and_replace_by_symlink (${URHO3D_ROOT_DIR}/android/urho3d-lib/src/main/assets ${URHO3D_ROOT_DIR}/bin/CoreData)
+check_and_replace_by_symlink (${URHO3D_ROOT_DIR}/android/launcher-app/src/main/assets ${URHO3D_ROOT_DIR}/bin/Data)
+check_and_replace_by_symlink (${URHO3D_ROOT_DIR}/android/launcher-app/src/main/assets ${URHO3D_ROOT_DIR}/bin/Autoload)
+
 # Setup SDK install destinations
 set (PATH_SUFFIX Urho3D)
 if (WIN32)
