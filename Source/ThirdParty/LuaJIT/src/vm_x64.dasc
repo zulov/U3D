@@ -2,6 +2,9 @@
 |// Bytecode interpreter, fast functions and helper functions.
 |// Copyright (C) 2005-2025 Mike Pall. See Copyright Notice in luajit.h
 |
+|// Urho3D: Modified by Christophe VILLE for U3D project
+|// Applying patch from https://github.com/LuaJIT/LuaJIT/issues/1311
+|
 |.arch x64
 |.section code_op, code_sub
 |
@@ -143,9 +146,7 @@
 |.define CFRAME_SPACE,	aword*5			// Delta for rsp (see <--).
 |.macro saveregs_
 |  push rbx; push r15; push r14
-|.if NO_UNWIND
 |  push r13; push r12
-|.endif
 |  sub rsp, CFRAME_SPACE
 |.endmacro
 |.macro saveregs
@@ -153,14 +154,11 @@
 |.endmacro
 |.macro restoreregs
 |  add rsp, CFRAME_SPACE
-|.if NO_UNWIND
 |  pop r12; pop r13
-|.endif
 |  pop r14; pop r15; pop rbx; pop rbp
 |.endmacro
 |
 |//----- 16 byte aligned,
-|.if NO_UNWIND
 |.define SAVE_RET,	aword [rsp+aword*11]	//<-- rsp entering interpreter.
 |.define SAVE_R4,	aword [rsp+aword*10]
 |.define SAVE_R3,	aword [rsp+aword*9]
@@ -168,13 +166,6 @@
 |.define SAVE_R1,	aword [rsp+aword*7]
 |.define SAVE_RU2,	aword [rsp+aword*6]
 |.define SAVE_RU1,	aword [rsp+aword*5]	//<-- rsp after register saves.
-|.else
-|.define SAVE_RET,	aword [rsp+aword*9]	//<-- rsp entering interpreter.
-|.define SAVE_R4,	aword [rsp+aword*8]
-|.define SAVE_R3,	aword [rsp+aword*7]
-|.define SAVE_R2,	aword [rsp+aword*6]
-|.define SAVE_R1,	aword [rsp+aword*5]	//<-- rsp after register saves.
-|.endif
 |.define SAVE_CFRAME,	aword [rsp+aword*4]
 |.define SAVE_PC,	aword [rsp+aword*3]
 |.define SAVE_L,	aword [rsp+aword*2]
@@ -4755,10 +4746,8 @@ static void emit_asm_debug(BuildCtx *ctx)
 	"\t.byte 0x83\n\t.uleb128 0x3\n"	/* offset rbx */
 	"\t.byte 0x8f\n\t.uleb128 0x4\n"	/* offset r15 */
 	"\t.byte 0x8e\n\t.uleb128 0x5\n"	/* offset r14 */
-#if LJ_NO_UNWIND
 	"\t.byte 0x8d\n\t.uleb128 0x6\n"	/* offset r13 */
 	"\t.byte 0x8c\n\t.uleb128 0x7\n"	/* offset r12 */
-#endif
 	"\t.align 8\n"
 	".LEFDE0:\n\n", fcofs, CFRAME_SIZE);
 #if LJ_HASFFI
