@@ -132,16 +132,12 @@ Engine::Engine(Context* context) :
     context_->RegisterSubsystem(new Log(context_));
 #endif
     context_->RegisterSubsystem(new ResourceCache(context_));
-    context_->RegisterSubsystem(new Localization(context_));
 #ifdef URHO3D_NETWORK
     context_->RegisterSubsystem(new Network(context_));
 #endif
 #ifdef URHO3D_DATABASE
     context_->RegisterSubsystem(new Database(context_));
 #endif
-    context_->RegisterSubsystem(new Input(context_));
-    context_->RegisterSubsystem(new Audio(context_));
-    context_->RegisterSubsystem(new UI(context_));
 
     // Register object factories for libraries which are not automatically registered along with subsystem creation
     RegisterSceneLibrary(context_);
@@ -180,6 +176,11 @@ bool Engine::Initialize(const VariantMap& parameters)
     // Register the rest of the subsystems
     if (!headless_)
     {
+        context_->RegisterSubsystem(new Localization(context_));
+        context_->RegisterSubsystem(new Input(context_));
+        context_->RegisterSubsystem(new Audio(context_));
+        context_->RegisterSubsystem(new UI(context_));
+
         context_->RegisterSubsystem(new Graphics(context_));
         context_->RegisterSubsystem(new Renderer(context_));
     }
@@ -694,22 +695,24 @@ void Engine::DumpMemory()
 void Engine::Update()
 {
     URHO3D_PROFILE(Update);
-
     // Logic update event
     using namespace Update;
 
     VariantMap& eventData = GetEventDataMap();
     eventData[P_TIMESTEP] = timeStep_;
     SendEvent(E_UPDATE, eventData);
-
+ 
     // Logic post-update event
     SendEvent(E_POSTUPDATE, eventData);
 
-    // Rendering update event
-    SendEvent(E_RENDERUPDATE, eventData);
+    if (!headless_)
+    {
+        // Rendering update event
+        SendEvent(E_RENDERUPDATE, eventData);
 
-    // Post-render update event
-    SendEvent(E_POSTRENDERUPDATE, eventData);
+        // Post-render update event
+        SendEvent(E_POSTRENDERUPDATE, eventData);
+    }
 }
 
 void Engine::Render()

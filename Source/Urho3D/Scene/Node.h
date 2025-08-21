@@ -731,12 +731,13 @@ protected:
     bool networkUpdate_;
 
 private:
+    /// Unique ID within the scene.
+    unsigned id_;
     /// Parent scene node.
     Node* parent_;
     /// Scene (root node).
     Scene* scene_;
-    /// Unique ID within the scene.
-    unsigned id_;
+
     /// Position.
     Vector3 position_;
     /// Rotation.
