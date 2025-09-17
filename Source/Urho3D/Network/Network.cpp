@@ -237,12 +237,12 @@ Network::Network(Context* context) :
     blacklistedRemoteEvents_.Insert(E_KEYDOWN);
     blacklistedRemoteEvents_.Insert(E_KEYUP);
     blacklistedRemoteEvents_.Insert(E_TEXTINPUT);
-    blacklistedRemoteEvents_.Insert(E_JOYSTICKCONNECTED);
-    blacklistedRemoteEvents_.Insert(E_JOYSTICKDISCONNECTED);
-    blacklistedRemoteEvents_.Insert(E_JOYSTICKBUTTONDOWN);
-    blacklistedRemoteEvents_.Insert(E_JOYSTICKBUTTONUP);
-    blacklistedRemoteEvents_.Insert(E_JOYSTICKAXISMOVE);
-    blacklistedRemoteEvents_.Insert(E_JOYSTICKHATMOVE);
+    // blacklistedRemoteEvents_.Insert(E_JOYSTICKCONNECTED);
+    // blacklistedRemoteEvents_.Insert(E_JOYSTICKDISCONNECTED);
+    // blacklistedRemoteEvents_.Insert(E_JOYSTICKBUTTONDOWN);
+    // blacklistedRemoteEvents_.Insert(E_JOYSTICKBUTTONUP);
+    // blacklistedRemoteEvents_.Insert(E_JOYSTICKAXISMOVE);
+    // blacklistedRemoteEvents_.Insert(E_JOYSTICKHATMOVE);
     blacklistedRemoteEvents_.Insert(E_TOUCHBEGIN);
     blacklistedRemoteEvents_.Insert(E_TOUCHEND);
     blacklistedRemoteEvents_.Insert(E_TOUCHMOVE);

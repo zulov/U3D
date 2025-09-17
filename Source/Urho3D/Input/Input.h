@@ -74,7 +74,7 @@ struct TouchState
     /// Last touched UI element from screen joystick.
     WeakPtr<UIElement> touchedElement_;
 };
-
+/*
 /// %Input state for a joystick.
 /// @nocount
 struct JoystickState
@@ -135,7 +135,7 @@ struct JoystickState
     /// POV hat bits.
     PODVector<int> hats_;
 };
-
+*/
 #ifdef __EMSCRIPTEN__
 class EmscriptenInput;
 #endif
@@ -196,16 +196,16 @@ public:
      *
      *  This method should only be called in main thread.
      */
-    SDL_JoystickID AddScreenJoystick(XMLFile* layoutFile = nullptr, XMLFile* styleFile = nullptr);
+    // SDL_JoystickID AddScreenJoystick(XMLFile* layoutFile = nullptr, XMLFile* styleFile = nullptr);
     /// Remove screen joystick by instance ID.
     /** Return true if successful.
      *
      *  This method should only be called in main thread.
      */
-    bool RemoveScreenJoystick(SDL_JoystickID id);
+    // bool RemoveScreenJoystick(SDL_JoystickID id);
     /// Set whether the virtual joystick is visible.
     /// @property
-    void SetScreenJoystickVisible(SDL_JoystickID id, bool enable);
+    // void SetScreenJoystickVisible(SDL_JoystickID id, bool enable);
     /// Show or hide on-screen keyboard on platforms that support it. When shown, keypresses from it are delivered as key events.
     /// @property
     void SetScreenKeyboardVisible(bool enable);
@@ -297,16 +297,16 @@ public:
 
     /// Return number of connected joysticks.
     /// @property
-    unsigned GetNumJoysticks() const { return joysticks_.Size(); }
+    // unsigned GetNumJoysticks() const { return joysticks_.Size(); }
     /// Return joystick state by ID, or null if does not exist.
     /// @property{get_joysticks}
-    JoystickState* GetJoystick(SDL_JoystickID id);
+    // JoystickState* GetJoystick(SDL_JoystickID id);
     /// Return joystick state by index, or null if does not exist. 0 = first connected joystick.
     /// @property{get_joysticksByIndex}
-    JoystickState* GetJoystickByIndex(unsigned index);
+    // JoystickState* GetJoystickByIndex(unsigned index);
     /// Return joystick state by name, or null if does not exist.
     /// @property{get_joysticksByName}
-    JoystickState* GetJoystickByName(const String& name);
+    // JoystickState* GetJoystickByName(const String& name);
 
     /// Return whether fullscreen toggle is enabled.
     /// @property
@@ -314,7 +314,7 @@ public:
 
     /// Return whether a virtual joystick is visible.
     /// @property
-    bool IsScreenJoystickVisible(SDL_JoystickID id) const;
+    // bool IsScreenJoystickVisible(SDL_JoystickID id) const;
     /// Return whether on-screen keyboard is supported.
     /// @property
     bool GetScreenKeyboardSupport() const;
@@ -352,9 +352,9 @@ private:
     /// Initialize when screen mode initially set.
     void Initialize();
     /// Open a joystick and return its ID. Return -1 if no joystick.
-    SDL_JoystickID OpenJoystick(unsigned index);
+    // SDL_JoystickID OpenJoystick(unsigned index);
     /// Setup internal joystick structures.
-    void ResetJoysticks();
+    // void ResetJoysticks();
     /// Prepare input state for application gaining input focus.
     void GainFocus();
     /// Prepare input state for application losing input focus.
@@ -388,7 +388,7 @@ private:
     /// Handle frame start event.
     void HandleBeginFrame(StringHash eventType, VariantMap& eventData);
     /// Handle touch events from the controls of screen joystick(s).
-    void HandleScreenJoystickTouch(StringHash eventType, VariantMap& eventData);
+    // void HandleScreenJoystickTouch(StringHash eventType, VariantMap& eventData);
     /// Handle SDL event.
     void HandleSDLEvent(void* sdlEvent);
 
@@ -427,7 +427,7 @@ private:
     /// String for text input.
     String textInput_;
     /// Opened joysticks.
-    HashMap<SDL_JoystickID, JoystickState> joysticks_;
+    // HashMap<SDL_JoystickID, JoystickState> joysticks_;
     /// Mouse buttons' down state.
     MouseButtonFlags mouseButtonDown_;
     /// Mouse buttons' pressed state.

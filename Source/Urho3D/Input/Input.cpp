@@ -61,11 +61,11 @@ extern "C" int SDL_AddTouch(SDL_TouchID touchID, SDL_TouchDeviceType type, const
 namespace Urho3D
 {
 
-const int SCREEN_JOYSTICK_START_ID = 0x40000000;
+// const int SCREEN_JOYSTICK_START_ID = 0x40000000;
 const StringHash VAR_BUTTON_KEY_BINDING("VAR_BUTTON_KEY_BINDING");
 const StringHash VAR_BUTTON_MOUSE_BUTTON_BINDING("VAR_BUTTON_MOUSE_BUTTON_BINDING");
 const StringHash VAR_LAST_KEYSYM("VAR_LAST_KEYSYM");
-const StringHash VAR_SCREEN_JOYSTICK_ID("VAR_SCREEN_JOYSTICK_ID");
+// const StringHash VAR_SCREEN_JOYSTICK_ID("VAR_SCREEN_JOYSTICK_ID");
 
 const unsigned TOUCHID_MAX = 32;
 
@@ -330,7 +330,7 @@ int Win32_ResizingEventWatcher(void* data, SDL_Event* event)
     return 0;
 }
 #endif
-
+/*
 void JoystickState::Initialize(unsigned numButtons, unsigned numAxes, unsigned numHats)
 {
     buttons_.Resize(numButtons);
@@ -353,7 +353,7 @@ void JoystickState::Reset()
     for (unsigned i = 0; i < hats_.Size(); ++i)
         hats_[i] = HAT_CENTER;
 }
-
+*/
 Input::Input(Context* context) :
     Object(context),
     mouseButtonDown_(0),
@@ -384,7 +384,8 @@ Input::Input(Context* context) :
     mouseMoveScaled_(false),
     initialized_(false)
 {
-    context_->RequireSDL(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
+    context_->RequireSDL(SDL_INIT_GAMECONTROLLER);
+    // context_->RequireSDL(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
 
     for (int i = 0; i < TOUCHID_MAX; i++)
         availableTouchIDs_.Push(i);
@@ -985,7 +986,7 @@ static void PopulateMouseButtonBindingMap(HashMap<String, int>& mouseButtonBindi
         mouseButtonBindingMap.Insert(MakePair<String, int>("X2", SDL_BUTTON_X2));
     }
 }
-
+/*
 SDL_JoystickID Input::AddScreenJoystick(XMLFile* layoutFile, XMLFile* styleFile)
 {
     static HashMap<String, int> keyBindingMap;
@@ -1181,7 +1182,7 @@ void Input::SetScreenJoystickVisible(SDL_JoystickID id, bool enable)
             state.screenJoystick_->SetVisible(enable);
     }
 }
-
+*/
 void Input::SetScreenKeyboardVisible(bool enable)
 {
     if (enable != SDL_IsTextInputActive())
@@ -1269,7 +1270,7 @@ void Input::RemoveAllGestures()
     SDL_RemoveAllDollarTemplates();
 #endif
 }
-
+/*
 SDL_JoystickID Input::OpenJoystick(unsigned index)
 {
     SDL_Joystick* joystick = SDL_JoystickOpen(index);
@@ -1305,7 +1306,7 @@ SDL_JoystickID Input::OpenJoystick(unsigned index)
 
     return joystickID;
 }
-
+*/
 Key Input::GetKeyFromName(const String& name) const
 {
     return (Key)SDL_GetKeyFromName(name.CString());
@@ -1452,7 +1453,7 @@ TouchState* Input::GetTouch(unsigned index) const
 
     return const_cast<TouchState*>(&i->second_);
 }
-
+/*
 JoystickState* Input::GetJoystickByIndex(unsigned index)
 {
     unsigned compare = 0;
@@ -1487,7 +1488,7 @@ bool Input::IsScreenJoystickVisible(SDL_JoystickID id) const
     HashMap<SDL_JoystickID, JoystickState>::ConstIterator i = joysticks_.Find(id);
     return i != joysticks_.End() && i->second_.screenJoystick_ && i->second_.screenJoystick_->IsVisible();
 }
-
+*/
 bool Input::GetScreenKeyboardSupport() const
 {
     return SDL_HasScreenKeyboardSupport();
@@ -1540,7 +1541,7 @@ void Input::Initialize()
         LoseFocus();
 #endif
 
-    ResetJoysticks();
+    // ResetJoysticks();
     ResetState();
 
     SubscribeToEvent(E_BEGINFRAME, URHO3D_HANDLER(Input, HandleBeginFrame));
@@ -1559,7 +1560,7 @@ void Input::Initialize()
 
     URHO3D_LOGINFO("Initialized input");
 }
-
+/*
 void Input::ResetJoysticks()
 {
     joysticks_.Clear();
@@ -1569,7 +1570,7 @@ void Input::ResetJoysticks()
     for (unsigned i = 0; i < size; ++i)
         OpenJoystick(i);
 }
-
+*/
 void Input::ResetInputAccumulation()
 {
     // Reset input accumulation for this frame
@@ -1578,12 +1579,13 @@ void Input::ResetInputAccumulation()
     mouseButtonPress_ = MOUSEB_NONE;
     mouseMove_ = IntVector2::ZERO;
     mouseMoveWheel_ = 0;
+	/*
     for (HashMap<SDL_JoystickID, JoystickState>::Iterator i = joysticks_.Begin(); i != joysticks_.End(); ++i)
     {
         for (unsigned j = 0; j < i->second_.buttonPress_.Size(); ++j)
             i->second_.buttonPress_[j] = false;
     }
-
+	*/
     // Reset touch delta movement
     for (HashMap<int, TouchState>::Iterator i = touches_.Begin(); i != touches_.End(); ++i)
     {
@@ -1645,9 +1647,10 @@ void Input::ResetState()
     scancodePress_.Clear();
 
     /// \todo Check if resetting joystick state on input focus loss is even necessary
+	/*
     for (HashMap<SDL_JoystickID, JoystickState>::Iterator i = joysticks_.Begin(); i != joysticks_.End(); ++i)
         i->second_.Reset();
-
+	*/
     ResetTouches();
 
     // Use SetMouseButton() to reset the state so that mouse events will be sent properly
@@ -2166,7 +2169,7 @@ void Input::HandleSDLEvent(void* sdlEvent)
             SendEvent(E_MULTIGESTURE, eventData);
         }
         break;
-
+	/*
     case SDL_JOYDEVICEADDED:
         {
             using namespace JoystickConnected;
@@ -2285,7 +2288,7 @@ void Input::HandleSDLEvent(void* sdlEvent)
             }
         }
         break;
-
+	
     case SDL_CONTROLLERBUTTONDOWN:
         {
             using namespace JoystickButtonDown;
@@ -2346,7 +2349,7 @@ void Input::HandleSDLEvent(void* sdlEvent)
             }
         }
         break;
-
+		*/
     case SDL_WINDOWEVENT:
         {
             switch (evt.window.event)
@@ -2410,13 +2413,14 @@ void Input::HandleScreenMode(StringHash eventType, VariantMap& eventData)
     windowID_ = SDL_GetWindowID(window);
 
     // Resize screen joysticks to new screen size
+	/*
     for (HashMap<SDL_JoystickID, JoystickState>::Iterator i = joysticks_.Begin(); i != joysticks_.End(); ++i)
     {
         UIElement* screenjoystick = i->second_.screenJoystick_;
         if (screenjoystick)
             screenjoystick->SetSize(graphics_->GetWidth(), graphics_->GetHeight());
     }
-
+	*/
     if (graphics_->GetFullscreen() || !mouseVisible_)
         focusedThisFrame_ = true;
 
@@ -2454,7 +2458,7 @@ void Input::HandleEndFrame(StringHash eventType, VariantMap& eventData)
     ResetInputAccumulation();
 }
 #endif
-
+/*
 void Input::HandleScreenJoystickTouch(StringHash eventType, VariantMap& eventData)
 {
     using namespace TouchBegin;
@@ -2595,5 +2599,5 @@ void Input::HandleScreenJoystickTouch(StringHash eventType, VariantMap& eventDat
     // Handle the fake SDL event to turn it into Urho3D genuine event
     HandleSDLEvent(&evt);
 }
-
+*/
 }
