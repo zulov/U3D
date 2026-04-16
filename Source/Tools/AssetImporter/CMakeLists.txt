@@ -28,8 +28,9 @@ define_source_files ()
 
 # Define dependency libs
 add_subdirectory (../../ThirdParty/Assimp ../../ThirdParty/Assimp)
-set (LIBS assimp)
-set (INCLUDE_DIRS ../../ThirdParty/Assimp/include ${CMAKE_CURRENT_BINARY_DIR}/../../ThirdParty/Assimp/include)
+add_subdirectory (../../ThirdParty/ufbx ../../ThirdParty/ufbx)
+set (LIBS assimp ufbx)
+set (INCLUDE_DIRS ../../ThirdParty/Assimp/include ${CMAKE_CURRENT_BINARY_DIR}/../../ThirdParty/Assimp/include ../../ThirdParty/ufbx)
 
 # Setup target
 setup_executable (TOOL)
