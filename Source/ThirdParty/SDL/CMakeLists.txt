@@ -358,7 +358,7 @@ set(LONGESTOPTIONNAME 26)
 
 set(SDL_SUBSYSTEMS
     Atomic Audio Video Render Events Threads Timers
-    File Loadso CPUinfo Filesystem Locale Misc)
+    File Loadso CPUinfo Filesystem Locale)
 foreach(_SUB ${SDL_SUBSYSTEMS})
   string(TOUPPER ${_SUB} _OPT)
   if (NOT DEFINED SDL_${_OPT}_ENABLED_BY_DEFAULT)
