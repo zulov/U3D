@@ -266,6 +266,66 @@ IntVector2 ToIntVector2(const char* source)
     return ret;
 }
 
+ShortVector2 ToShortVector2(const String& source)
+{
+    return ToShortVector2(source.CString());
+}
+
+ShortVector2 ToShortVector2(const char* source)
+{
+    ShortVector2 ret(ShortVector2::ZERO);
+
+    unsigned elements = CountElements(source, ' ');
+    if (elements < 2)
+        return ret;
+
+    auto* ptr = (char*)source;
+    ret.x_ = (short)strtol(ptr, &ptr, 10);
+    ret.y_ = (short)strtol(ptr, &ptr, 10);
+
+    return ret;
+}
+
+CharVector2 ToCharVector2(const String& source)
+{
+    return ToCharVector2(source.CString());
+}
+
+CharVector2 ToCharVector2(const char* source)
+{
+    CharVector2 ret(CharVector2::ZERO);
+
+    unsigned elements = CountElements(source, ' ');
+    if (elements < 2)
+        return ret;
+
+    auto* ptr = (char*)source;
+    ret.x_ = (signed char)strtol(ptr, &ptr, 10);
+    ret.y_ = (signed char)strtol(ptr, &ptr, 10);
+
+    return ret;
+}
+
+UCharVector2 ToUCharVector2(const String& source)
+{
+    return ToUCharVector2(source.CString());
+}
+
+UCharVector2 ToUCharVector2(const char* source)
+{
+    UCharVector2 ret(UCharVector2::ZERO);
+
+    unsigned elements = CountElements(source, ' ');
+    if (elements < 2)
+        return ret;
+
+    auto* ptr = (char*)source;
+    ret.x_ = (unsigned char)strtoul(ptr, &ptr, 10);
+    ret.y_ = (unsigned char)strtoul(ptr, &ptr, 10);
+
+    return ret;
+}
+
 IntVector3 ToIntVector3(const String& source)
 {
     return ToIntVector3(source.CString());

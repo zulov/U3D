@@ -31,6 +31,25 @@
 namespace Urho3D
 {
 
+const ShortVector2 ShortVector2::ZERO;
+const ShortVector2 ShortVector2::LEFT(-1, 0);
+const ShortVector2 ShortVector2::RIGHT(1, 0);
+const ShortVector2 ShortVector2::UP(0, 1);
+const ShortVector2 ShortVector2::DOWN(0, -1);
+const ShortVector2 ShortVector2::ONE(1, 1);
+
+const CharVector2 CharVector2::ZERO;
+const CharVector2 CharVector2::LEFT(-1, 0);
+const CharVector2 CharVector2::RIGHT(1, 0);
+const CharVector2 CharVector2::UP(0, 1);
+const CharVector2 CharVector2::DOWN(0, -1);
+const CharVector2 CharVector2::ONE(1, 1);
+
+const UCharVector2 UCharVector2::ZERO;
+const UCharVector2 UCharVector2::RIGHT(1, 0);
+const UCharVector2 UCharVector2::UP(0, 1);
+const UCharVector2 UCharVector2::ONE(1, 1);
+
 const Vector2 Vector2::ZERO;
 const Vector2 Vector2::LEFT(-1.0f, 0.0f);
 const Vector2 Vector2::RIGHT(1.0f, 0.0f);
@@ -44,6 +63,27 @@ const IntVector2 IntVector2::RIGHT(1, 0);
 const IntVector2 IntVector2::UP(0, 1);
 const IntVector2 IntVector2::DOWN(0, -1);
 const IntVector2 IntVector2::ONE(1, 1);
+
+String ShortVector2::ToString() const
+{
+    char tempBuffer[CONVERSION_BUFFER_LENGTH];
+    sprintf(tempBuffer, "%d %d", x_, y_);
+    return String(tempBuffer);
+}
+
+String CharVector2::ToString() const
+{
+    char tempBuffer[CONVERSION_BUFFER_LENGTH];
+    sprintf(tempBuffer, "%d %d", x_, y_);
+    return String(tempBuffer);
+}
+
+String UCharVector2::ToString() const
+{
+    char tempBuffer[CONVERSION_BUFFER_LENGTH];
+    sprintf(tempBuffer, "%u %u", (unsigned)x_, (unsigned)y_);
+    return String(tempBuffer);
+}
 
 String Vector2::ToString() const
 {

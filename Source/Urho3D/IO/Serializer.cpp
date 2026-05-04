@@ -103,6 +103,21 @@ bool Serializer::WriteIntVector3(const IntVector3& value)
     return Write(value.Data(), sizeof value) == sizeof value;
 }
 
+bool Serializer::WriteShortVector2(const ShortVector2& value)
+{
+    return Write(value.Data(), sizeof value) == sizeof value;
+}
+
+bool Serializer::WriteCharVector2(const CharVector2& value)
+{
+    return Write(value.Data(), sizeof value) == sizeof value;
+}
+
+bool Serializer::WriteUCharVector2(const UCharVector2& value)
+{
+    return Write(value.Data(), sizeof value) == sizeof value;
+}
+
 bool Serializer::WriteRect(const Rect& value)
 {
     return Write(value.Data(), sizeof value) == sizeof value;

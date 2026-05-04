@@ -156,6 +156,27 @@ IntVector3 Deserializer::ReadIntVector3()
     return IntVector3(data);
 }
 
+ShortVector2 Deserializer::ReadShortVector2()
+{
+    short data[2];
+    Read(data, sizeof data);
+    return ShortVector2(data);
+}
+
+CharVector2 Deserializer::ReadCharVector2()
+{
+    signed char data[2];
+    Read(data, sizeof data);
+    return CharVector2(data);
+}
+
+UCharVector2 Deserializer::ReadUCharVector2()
+{
+    unsigned char data[2];
+    Read(data, sizeof data);
+    return UCharVector2(data);
+}
+
 Rect Deserializer::ReadRect()
 {
     float data[4];
