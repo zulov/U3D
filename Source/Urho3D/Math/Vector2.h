@@ -27,7 +27,6 @@
 
 namespace Urho3D
 {
-
 class IntVector2;
 class Vector2;
 
@@ -820,6 +819,14 @@ public:
         const float dx = x_ - point.x_;
         const float dy = y_ - point.y_;
         return dx * dx + dy * dy;
+    }
+
+    /// Calculate squared XZ-plane distance to a 2D point.
+    float SqDistXZ(const Vector2& point) const
+    {
+        const float dx = x_ - point.x_;
+        const float dz = y_ - point.y_;
+        return dx * dx + dz * dz;
     }
 
     /// Calculate dot product.
