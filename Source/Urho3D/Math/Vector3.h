@@ -388,10 +388,10 @@ public:
     }
 
     /// Calculate distance to another position vector.
-    float DistanceToPoint(const Vector3& point) const { return sqrtf(DistanceSquaredToPoint(point)); }
+    float DistanceToPoint(const Vector3& point) const { return sqrtf(SqDist(point)); }
 
     /// Calculate squared distance to another position vector.
-    float DistanceSquaredToPoint(const Vector3& point) const
+    float SqDist(const Vector3& point) const
     {
         const float dx = x_ - point.x_;
         const float dy = y_ - point.y_;
@@ -400,7 +400,7 @@ public:
     }
 
     /// Calculate squared XZ-plane distance to another position vector.
-    float DistanceSquaredToPoint2D(const Vector3& point) const
+    float SqDistXZ(const Vector3& point) const
     {
         const float dx = x_ - point.x_;
         const float dz = z_ - point.z_;
@@ -408,11 +408,21 @@ public:
     }
 
     /// Calculate squared XZ-plane distance to a 2D point.
-    float DistanceSquaredToPoint2D(const Vector2& point) const
+    float SqDistXZ(const Vector2& point) const
     {
         const float dx = x_ - point.x_;
         const float dz = z_ - point.y_;
         return dx * dx + dz * dz;
+    }
+
+    Vector2 DirToXZ(const Urho3D::Vector2& b) const
+    { 
+        return {b.x_ - x_, b.y_ - z_};
+    }
+
+    Vector2 DirToXZ(const Urho3D::Vector3& b) const
+    {
+        return {b.x_ - x_, b.z_ - z_};
     }
 
     /// Calculate distance to the plane with given origin and normal.

@@ -910,12 +910,11 @@ public:
     /// Return vector limited to the specified maximum length.
     Vector2 LimitedTo(float maxLength) const
     {
-        const float clampedMaxLength = maxLength;
         const float lenSquared = LengthSquared();
-        if (lenSquared > clampedMaxLength * clampedMaxLength)
+        if (lenSquared > maxLength * maxLength)
         {
-            const float scale = clampedMaxLength / sqrtf(lenSquared);
-            return Vector2(x_ * scale, y_ * scale);
+            const float scale = maxLength / sqrtf(lenSquared);
+            return {x_ * scale, y_ * scale};
         }
         return *this;
     }
@@ -923,11 +922,10 @@ public:
     /// Limit this vector to the specified maximum length.
     void LimitTo(float maxLength)
     {
-        const float clampedMaxLength = maxLength;
         const float lenSquared = LengthSquared();
-        if (lenSquared > clampedMaxLength * clampedMaxLength)
+        if (lenSquared > maxLength * maxLength)
         {
-            const float scale = clampedMaxLength / sqrtf(lenSquared);
+            const float scale = maxLength / sqrtf(lenSquared);
             x_ *= scale;
             y_ *= scale;
         }
