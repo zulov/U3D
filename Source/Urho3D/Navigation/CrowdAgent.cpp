@@ -80,18 +80,18 @@ static const char* crowdAgentPushinessNames[] = {
 CrowdAgent::CrowdAgent(Context* context) :
     Component(context),
     agentCrowdId_(-1),
-    requestedTargetType_(DEFAULT_AGENT_REQUEST_TARGET_TYPE),
-    updateNodePosition_(true),
     maxAccel_(DEFAULT_AGENT_MAX_ACCEL),
     maxSpeed_(DEFAULT_AGENT_MAX_SPEED),
     radius_(0.0f),
     height_(0.0f),
     queryFilterType_(DEFAULT_AGENT_QUERY_FILTER_TYPE),
     obstacleAvoidanceType_(DEFAULT_AGENT_OBSTACLE_AVOIDANCE_TYPE),
+    requestedTargetType_(DEFAULT_AGENT_REQUEST_TARGET_TYPE),
     navQuality_(DEFAULT_AGENT_AVOIDANCE_QUALITY),
     navPushiness_(DEFAULT_AGENT_NAVIGATION_PUSHINESS),
     previousTargetState_(CA_TARGET_NONE),
     previousAgentState_(CA_STATE_WALKING),
+    updateNodePosition_(true),
     ignoreTransformChanges_(false)
 {
     SubscribeToEvent(E_NAVIGATION_TILE_ADDED, URHO3D_HANDLER(CrowdAgent, HandleNavigationTileAdded));

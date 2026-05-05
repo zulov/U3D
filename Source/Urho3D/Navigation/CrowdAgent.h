@@ -240,10 +240,8 @@ private:
     Vector3 targetPosition_;
     /// Requested target velocity.
     Vector3 targetVelocity_;
-    /// Requested target type.
-    CrowdAgentRequestedTarget requestedTargetType_;
-    /// Flag indicating the node's position should be updated by Detour crowd manager.
-    bool updateNodePosition_;
+    /// Agent's previous position used to check for position changes.
+    Vector3 previousPosition_;
     /// Agent's max acceleration.
     float maxAccel_;
     /// Agent's max Velocity.
@@ -256,16 +254,18 @@ private:
     unsigned queryFilterType_;
     /// Agent's obstacle avoidance type, it is an index to the obstacle avoidance array configured in Detour crowd manager. It is ignored when agent's navigation quality is not set to "NAVIGATIONQUALITY_HIGH".
     unsigned obstacleAvoidanceType_;
+    /// Requested target type.
+    CrowdAgentRequestedTarget requestedTargetType_;
     /// Agent's navigation quality. The higher the setting, the higher the CPU usage during crowd simulation.
     NavigationQuality navQuality_;
     /// Agent's navigation pushiness. The higher the setting, the stronger the agent pushes its colliding neighbours around.
     NavigationPushiness navPushiness_;
-    /// Agent's previous position used to check for position changes.
-    Vector3 previousPosition_;
     /// Agent's previous target state used to check for state changes.
     CrowdAgentTargetState previousTargetState_;
     /// Agent's previous agent state used to check for state changes.
     CrowdAgentState previousAgentState_;
+    /// Flag indicating the node's position should be updated by Detour crowd manager.
+    bool updateNodePosition_;
     /// Internal flag to ignore transform changes because it came from us, used in OnCrowdAgentReposition().
     bool ignoreTransformChanges_;
 };

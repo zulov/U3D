@@ -78,10 +78,10 @@ struct URHO3D_API RenderTargetInfo
     unsigned format_{};
     /// Absolute size or multiplier.
     Vector2 size_;
-    /// Size mode.
-    RenderTargetSizeMode sizeMode_{SIZE_ABSOLUTE};
     /// Multisampling level (1 = no multisampling).
     int multiSample_{1};
+    /// Size mode.
+    RenderTargetSizeMode sizeMode_{SIZE_ABSOLUTE};
     /// Multisampling autoresolve flag.
     bool autoResolve_{true};
     /// Enabled flag.
@@ -148,14 +148,8 @@ struct URHO3D_API RenderPathCommand
 
     /// Tag name.
     String tag_;
-    /// Command type.
-    RenderCommandType type_{};
-    /// Sorting mode.
-    RenderCommandSortMode sortMode_{};
     /// Scene pass name.
     String pass_;
-    /// Scene pass index. Filled by View.
-    unsigned passIndex_{};
     /// Command/pass metadata.
     String metadata_;
     /// Vertex shader name.
@@ -174,14 +168,22 @@ struct URHO3D_API RenderPathCommand
     Vector<Pair<String, CubeMapFace> > outputs_;
     /// Depth-stencil output name.
     String depthStencilName_;
-    /// Clear flags. Affects clear command only.
-    ClearTargetFlags clearFlags_{};
+    /// Event name.
+    String eventName_;
     /// Clear color. Affects clear command only.
     Color clearColor_;
+    /// Scene pass index. Filled by View.
+    unsigned passIndex_{};
+    /// Clear flags. Affects clear command only.
+    ClearTargetFlags clearFlags_{};
     /// Clear depth. Affects clear command only.
     float clearDepth_{};
     /// Clear stencil value. Affects clear command only.
     unsigned clearStencil_{};
+    /// Command type.
+    RenderCommandType type_{};
+    /// Sorting mode.
+    RenderCommandSortMode sortMode_{};
     /// Blend mode. Affects quad command only.
     BlendMode blendMode_{BLEND_REPLACE};
     /// Enabled flag.
@@ -194,8 +196,6 @@ struct URHO3D_API RenderPathCommand
     bool useLitBase_{true};
     /// Vertex lights flag.
     bool vertexLights_{};
-    /// Event name.
-    String eventName_;
 };
 
 /// Rendering path definition. A sequence of commands (e.g. clear screen, draw objects with specific pass) that yields the scene rendering result.
