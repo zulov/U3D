@@ -33,7 +33,7 @@ namespace Urho3D
 class XMLElement;
 
 /// Orientation.
-enum Orientation2D
+enum Orientation2D : unsigned char
 {
     /// Orthogonal.
     O_ORTHOGONAL = 0,

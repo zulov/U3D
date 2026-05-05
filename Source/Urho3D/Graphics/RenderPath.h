@@ -37,7 +37,7 @@ class XMLElement;
 class XMLFile;
 
 /// Rendering path command types.
-enum RenderCommandType
+enum RenderCommandType : unsigned char
 {
     CMD_NONE = 0,
     CMD_CLEAR,
@@ -50,14 +50,14 @@ enum RenderCommandType
 };
 
 /// Rendering path sorting modes.
-enum RenderCommandSortMode
+enum RenderCommandSortMode : unsigned char
 {
     SORT_FRONTTOBACK = 0,
     SORT_BACKTOFRONT
 };
 
 /// Rendertarget size mode.
-enum RenderTargetSizeMode
+enum RenderTargetSizeMode : unsigned char
 {
     SIZE_ABSOLUTE = 0,
     SIZE_VIEWPORTDIVISOR,

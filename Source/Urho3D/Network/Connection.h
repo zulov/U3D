@@ -99,7 +99,7 @@ struct PackageUpload
 };
 
 /// Send modes for observer position/rotation. Activated by the client setting either position or rotation.
-enum ObserverPositionSendMode
+enum ObserverPositionSendMode : unsigned char
 {
     OPSM_NONE = 0,
     OPSM_POSITION,
@@ -107,7 +107,7 @@ enum ObserverPositionSendMode
 };
 
 /// Packet types for outgoing buffers. Outgoing messages are grouped by their type
-enum PacketType {
+enum PacketType : unsigned char {
     PT_UNRELIABLE_UNORDERED,
     PT_UNRELIABLE_ORDERED,
     PT_RELIABLE_UNORDERED,

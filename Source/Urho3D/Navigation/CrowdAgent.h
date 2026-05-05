@@ -30,14 +30,14 @@
 namespace Urho3D
 {
 
-enum CrowdAgentRequestedTarget
+enum CrowdAgentRequestedTarget : unsigned char
 {
     CA_REQUESTEDTARGET_NONE = 0,
     CA_REQUESTEDTARGET_POSITION,
     CA_REQUESTEDTARGET_VELOCITY
 };
 
-enum CrowdAgentTargetState
+enum CrowdAgentTargetState : unsigned char
 {
     CA_TARGET_NONE = 0,
     CA_TARGET_FAILED,
@@ -48,21 +48,21 @@ enum CrowdAgentTargetState
     CA_TARGET_VELOCITY
 };
 
-enum CrowdAgentState
+enum CrowdAgentState : unsigned char
 {
     CA_STATE_INVALID = 0,   ///< The agent is not in a valid state.
     CA_STATE_WALKING,       ///< The agent is traversing a normal navigation mesh polygon.
     CA_STATE_OFFMESH        ///< The agent is traversing an off-mesh connection.
 };
 
-enum NavigationQuality
+enum NavigationQuality : unsigned char
 {
     NAVIGATIONQUALITY_LOW = 0,
     NAVIGATIONQUALITY_MEDIUM = 1,
     NAVIGATIONQUALITY_HIGH = 2
 };
 
-enum NavigationPushiness
+enum NavigationPushiness : unsigned char
 {
     NAVIGATIONPUSHINESS_LOW = 0,
     NAVIGATIONPUSHINESS_MEDIUM,

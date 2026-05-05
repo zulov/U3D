@@ -57,7 +57,7 @@ struct RayQueryResult;
 struct WorkItem;
 
 /// Geometry update type.
-enum UpdateGeometryType
+enum UpdateGeometryType : unsigned char
 {
     UPDATE_NONE = 0,
     UPDATE_MAIN_THREAD,
