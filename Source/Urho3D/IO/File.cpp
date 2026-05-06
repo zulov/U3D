@@ -67,7 +67,6 @@ static const unsigned SKIP_BUFFER_SIZE = 1024;
 
 File::File(Context* context) :
     Object(context),
-    mode_(FILE_READ),
     handle_(nullptr),
 #ifdef __ANDROID__
     assetHandle_(0),
@@ -76,6 +75,7 @@ File::File(Context* context) :
     readBufferSize_(0),
     offset_(0),
     checksum_(0),
+    mode_(FILE_READ),
     compressed_(false),
     readSyncNeeded_(false),
     writeSyncNeeded_(false)
@@ -84,7 +84,6 @@ File::File(Context* context) :
 
 File::File(Context* context, const String& fileName, FileMode mode) :
     Object(context),
-    mode_(FILE_READ),
     handle_(nullptr),
 #ifdef __ANDROID__
     assetHandle_(0),
@@ -93,6 +92,7 @@ File::File(Context* context, const String& fileName, FileMode mode) :
     readBufferSize_(0),
     offset_(0),
     checksum_(0),
+    mode_(FILE_READ),
     compressed_(false),
     readSyncNeeded_(false),
     writeSyncNeeded_(false)
@@ -102,7 +102,6 @@ File::File(Context* context, const String& fileName, FileMode mode) :
 
 File::File(Context* context, PackageFile* package, const String& fileName) :
     Object(context),
-    mode_(FILE_READ),
     handle_(nullptr),
 #ifdef __ANDROID__
     assetHandle_(0),
@@ -111,6 +110,7 @@ File::File(Context* context, PackageFile* package, const String& fileName) :
     readBufferSize_(0),
     offset_(0),
     checksum_(0),
+    mode_(FILE_READ),
     compressed_(false),
     readSyncNeeded_(false),
     writeSyncNeeded_(false)

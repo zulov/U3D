@@ -340,12 +340,16 @@ private:
     String sceneFileName_;
     /// Statistics timer.
     Timer statsTimer_;
-    /// Remote endpoint port.
-    unsigned short port_;
     /// Observer position for interest management.
     Vector3 position_;
     /// Observer rotation for interest management.
     Quaternion rotation_;
+    /// Address of this connection.
+    SLNet::AddressOrGUID* address_;
+    /// Raknet peer object.
+    SLNet::RakPeerInterface* peer_;
+    /// Remote endpoint port.
+    unsigned short port_;
     /// Send mode for the observer position & rotation.
     ObserverPositionSendMode sendMode_;
     /// Client connection flag.
@@ -356,10 +360,6 @@ private:
     bool sceneLoaded_;
     /// Show statistics flag.
     bool logStatistics_;
-    /// Address of this connection.
-    SLNet::AddressOrGUID* address_;
-    /// Raknet peer object.
-    SLNet::RakPeerInterface* peer_;
     /// Temporary variable to hold packet count in the next second, x - packets in, y - packets out.
     IntVector2 tempPacketCounter_;
     /// Packet count in the last second, x - packets in, y - packets out.

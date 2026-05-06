@@ -71,13 +71,14 @@ PackageUpload::PackageUpload() :
 Connection::Connection(Context* context, bool isClient, const SLNet::AddressOrGUID& address, SLNet::RakPeerInterface* peer) :
     Object(context),
     timeStamp_(0),
+    address_(nullptr),
     peer_(peer),
+    port_(0),
     sendMode_(OPSM_NONE),
     isClient_(isClient),
     connectPending_(false),
     sceneLoaded_(false),
     logStatistics_(false),
-    address_(nullptr),
     packedMessageLimit_(1024)
 {
     sceneState_.connection_ = this;

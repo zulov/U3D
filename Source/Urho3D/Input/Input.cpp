@@ -362,13 +362,13 @@ Input::Input(Context* context) :
     mouseMoveWheel_(0),
     inputScale_(Vector2::ONE),
     windowID_(0),
+    mouseMode_(MM_ABSOLUTE),
+    lastMouseMode_(MM_ABSOLUTE),
     toggleFullscreen_(true),
     mouseVisible_(false),
     lastMouseVisible_(false),
     mouseGrabbed_(false),
     lastMouseGrabbed_(false),
-    mouseMode_(MM_ABSOLUTE),
-    lastMouseMode_(MM_ABSOLUTE),
 #ifndef __EMSCRIPTEN__
     sdlMouseRelative_(false),
 #else
