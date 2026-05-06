@@ -107,12 +107,12 @@ SoundSource::SoundSource(Context* context) :
     gain_(1.0f),
     attenuation_(1.0f),
     panning_(0.0f),
-    sendFinishedEvent_(false),
-    autoRemove_(REMOVE_DISABLED),
     position_(nullptr),
     fractPosition_(0),
     timePosition_(0.0f),
-    unusedStreamSize_(0)
+    unusedStreamSize_(0),
+    sendFinishedEvent_(false),
+    autoRemove_(REMOVE_DISABLED)
 {
     audio_ = GetSubsystem<Audio>();
 

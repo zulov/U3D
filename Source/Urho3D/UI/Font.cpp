@@ -54,10 +54,10 @@ static const float MAX_POINT_SIZE = 96;
 Font::Font(Context* context) :
     Resource(context),
     fontDataSize_(0),
-    absoluteOffset_(IntVector2::ZERO),
-    scaledOffset_(Vector2::ZERO),
     fontType_(FONT_NONE),
-    sdfFont_(false)
+    sdfFont_(false),
+    absoluteOffset_(IntVector2::ZERO),
+    scaledOffset_(Vector2::ZERO)
 {
 }
 
