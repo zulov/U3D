@@ -163,6 +163,13 @@ ShortVector2 Deserializer::ReadShortVector2()
     return ShortVector2(data);
 }
 
+UShortVector2 Deserializer::ReadUShortVector2()
+{
+    unsigned short data[2];
+    Read(data, sizeof data);
+    return UShortVector2(data);
+}
+
 CharVector2 Deserializer::ReadCharVector2()
 {
     signed char data[2];

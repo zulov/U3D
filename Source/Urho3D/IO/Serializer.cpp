@@ -108,6 +108,11 @@ bool Serializer::WriteShortVector2(const ShortVector2& value)
     return Write(value.Data(), sizeof value) == sizeof value;
 }
 
+bool Serializer::WriteUShortVector2(const UShortVector2& value)
+{
+    return Write(value.Data(), sizeof value) == sizeof value;
+}
+
 bool Serializer::WriteCharVector2(const CharVector2& value)
 {
     return Write(value.Data(), sizeof value) == sizeof value;

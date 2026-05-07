@@ -286,6 +286,26 @@ ShortVector2 ToShortVector2(const char* source)
     return ret;
 }
 
+UShortVector2 ToUShortVector2(const String& source)
+{
+    return ToUShortVector2(source.CString());
+}
+
+UShortVector2 ToUShortVector2(const char* source)
+{
+    UShortVector2 ret(UShortVector2::ZERO);
+
+    unsigned elements = CountElements(source, ' ');
+    if (elements < 2)
+        return ret;
+
+    auto* ptr = (char*)source;
+    ret.x_ = (unsigned short)strtoul(ptr, &ptr, 10);
+    ret.y_ = (unsigned short)strtoul(ptr, &ptr, 10);
+
+    return ret;
+}
+
 CharVector2 ToCharVector2(const String& source)
 {
     return ToCharVector2(source.CString());

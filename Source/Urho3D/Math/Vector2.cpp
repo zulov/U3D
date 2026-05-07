@@ -38,6 +38,11 @@ const ShortVector2 ShortVector2::UP(0, 1);
 const ShortVector2 ShortVector2::DOWN(0, -1);
 const ShortVector2 ShortVector2::ONE(1, 1);
 
+const UShortVector2 UShortVector2::ZERO;
+const UShortVector2 UShortVector2::RIGHT(1, 0);
+const UShortVector2 UShortVector2::UP(0, 1);
+const UShortVector2 UShortVector2::ONE(1, 1);
+
 const CharVector2 CharVector2::ZERO;
 const CharVector2 CharVector2::LEFT(-1, 0);
 const CharVector2 CharVector2::RIGHT(1, 0);
@@ -68,6 +73,13 @@ String ShortVector2::ToString() const
 {
     char tempBuffer[CONVERSION_BUFFER_LENGTH];
     sprintf(tempBuffer, "%d %d", x_, y_);
+    return String(tempBuffer);
+}
+
+String UShortVector2::ToString() const
+{
+    char tempBuffer[CONVERSION_BUFFER_LENGTH];
+    sprintf(tempBuffer, "%u %u", (unsigned)x_, (unsigned)y_);
     return String(tempBuffer);
 }
 
